@@ -35,11 +35,14 @@ jobs:
         go-version: '1.22'
         cache: true
 
-    - name: Install Dependencies (Linux only)
+    - name: Install system dependencies (Wayland / X11 / GL)
       if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt-get update
-        sudo apt-get install -y gcc libgl1-mesa-dev xorg-dev
+        sudo apt-get install -y build-essential pkg-config \
+          libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev \
+          libgl1-mesa-dev libglu1-mesa-dev libxkbcommon-dev \
+          libwayland-dev libwayland-egl-dev libdbus-1-dev libudev-dev
 
     - name: Build Application
       run: |
