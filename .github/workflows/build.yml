@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - 'v*' # Sadece v1.0, v2.0 gibi bir tag atıldığında çalışır
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -66,7 +68,7 @@ jobs:
           path: builds
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             builds/bul_scanner_linux_amd64/bul_scanner_linux_amd64
