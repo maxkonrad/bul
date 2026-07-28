@@ -41,7 +41,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y build-essential pkg-config \
           libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev \
-          libgl1-mesa-dev libglu1-mesa-dev libxkbcommon-dev \
+          libgl1-mesa-dev libglu1-mesa-dev libxkbcommon-dev libxxf86vm-dev \
           libwayland-dev libdbus-1-dev libudev-dev
 
     - name: Build Application
