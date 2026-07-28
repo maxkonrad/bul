@@ -42,7 +42,7 @@ jobs:
         sudo apt-get install -y build-essential pkg-config \
           libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev \
           libgl1-mesa-dev libglu1-mesa-dev libxkbcommon-dev \
-          libwayland-dev libwayland-egl-dev libdbus-1-dev libudev-dev
+          libwayland-dev libdbus-1-dev libudev-dev
 
     - name: Build Application
       run: |
