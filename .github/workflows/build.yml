@@ -1,0 +1,73 @@
+name: Build ARA (BUL) for All Platforms
+
+on:
+  push:
+    tags:
+      - 'v*' # Sadece v1.0, v2.0 gibi bir tag atıldığında çalışır
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: bul_scanner_linux_amd64
+            asset_name: bul_scanner_linux_amd64
+            fyne_os: linux
+          - os: windows-latest
+            artifact_name: bul_scanner_windows_amd64.exe
+            asset_name: bul_scanner_windows_amd64.exe
+            fyne_os: windows
+          - os: macos-latest
+            artifact_name: bul_scanner_macos_arm64
+            asset_name: bul_scanner_macos_arm64
+            fyne_os: darwin
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.22'
+        cache: true
+
+    - name: Install Dependencies (Linux only)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc libgl1-mesa-dev xorg-dev
+
+    - name: Build Application
+      run: |
+        go mod tidy
+        go build -ldflags="-s -w" -o ${{ matrix.artifact_name }} .
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.asset_name }}
+        path: ${{ matrix.artifact_name }}
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: builds
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            builds/bul_scanner_linux_amd64/bul_scanner_linux_amd64
+            builds/bul_scanner_windows_amd64.exe/bul_scanner_windows_amd64.exe
+            builds/bul_scanner_macos_arm64/bul_scanner_macos_arm64
+          draft: false
+          prerelease: false
