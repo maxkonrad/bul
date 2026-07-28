@@ -1,51 +1,51 @@
-# BUL — Ağ ve Port Tarayıcı 🔍
+# BUL — Network & Port Scanner 🔍
 
-**BUL**, Go dilinin gücünü (Goroutines ve Channel'lar) modern ve minimalist bir arayüzle (Fyne v2) birleştiren eşzamanlı (concurrent) bir yerel ağ ve port tarayıcısıdır. Kullanıcı dostu ve yüksek kontrastlı koyu (dark) temasıyla, ağınızdaki aktif cihazları saniyeler içinde keşfetmenizi ve analiz etmenizi sağlar.
+**BUL** is a concurrent local network and port scanner that combines the power of Go (Goroutines and Channels) with a modern, minimalist graphical user interface built on Fyne v2. With its user-friendly, high-contrast dark theme, it allows you to discover and analyze active devices on your network in seconds.
 
-## Ekran Görüntüleri
+## Screenshots
 
-### Ağ Tarama (Cihaz Keşfi)
-![Ağ Tarama](screenshots/network_scan.png)
-*IP aralığı belirleyerek ağdaki aktif cihazların durumlarını, yanıt sürelerini (ms) ve MAC adreslerini eşzamanlı olarak tespit eder.*
+### Network Scan (Device Discovery)
+![Network Scan](screenshots/network_scan.png)
+*By specifying an IP range, it concurrently detects the status, response times (ms), and MAC addresses of active devices on the network.*
 
-### Port Tarama (Servis Tespiti)
-![Port Tarama](screenshots/port_scan.png)
-*Tespit edilen cihazların en yaygın 25 portunu, spesifik bir portunu (ör. 8080) veya belirli bir port aralığını (ör. 50-120) tarar ve açık portları en üstte vurgular.*
+### Port Scan (Service Detection)
+![Port Scan](screenshots/port_scan.png)
+*Scans the top 25 common ports, a specific port (e.g., 8080), or a specific port range (e.g., 50-120) of selected active devices, automatically highlighting and sorting open ports at the top.*
 
 ---
 
-## Özellikler ✨
+## Features ✨
 
-- **Hızlı Ağ Tarama:** Verilen IP aralığını (`192.168.1.1` - `255`) ICMP (Ping) kullanarak tarar ve cihazın ayakta (aktif/pasif) olup olmadığını raporlar.
-- **Detaylı Bilgi:** Aktif cihazlar için yanıt süresi (RTT) ve MAC adresi (ARP tablosu üzerinden) çözümler.
-- **Gelişmiş Port Tarama:** Ağda bulunan cihazları listeden seçip, tek tıkla port taraması yapabilirsiniz.
-  - **Yaygın Portlar:** Boş bırakıldığında otomatik 25 kritik port (HTTP, HTTPS, SSH, FTP, MySQL vb.) taranır.
-  - **Özel/Aralık Tarama:** `8080` (tek port) veya `50-120` (port aralığı) belirleyebilirsiniz.
-  - **Akıllı Sıralama:** Tarama bittiğinde açık olan portlar otomatik olarak listenin en üstüne taşınır.
-- **Eşzamanlılık & Performans:** Arka planda `Goroutine`'ler, `Channel`'lar ve Semaphore mimarisi kullanılarak arayüzü dondurmadan arka planda maksimum verimle çalışır. Fyne'ın Data Binding özelliği sayesinde sonuçlar canlı olarak ekrana yansır.
-- **Çapraz Platform (Cross-Platform):** GitHub Actions otomasyonu ile Windows (.exe), Linux ve macOS (Apple Silicon & Intel) için derlenebilir ve tamamen yerel bir uygulama gibi çalışır.
+- **Fast Network Scanning:** Scans the provided IP range (e.g., `192.168.1.1` - `255`) using ICMP (Ping) to report whether the device is active or inactive.
+- **Detailed Information:** Resolves response times (RTT) and MAC addresses (via the ARP table) for active devices.
+- **Advanced Port Scanning:** Select any discovered device from the list and perform a port scan with a single click.
+  - **Common Ports:** If left blank, it automatically scans 25 critical ports (HTTP, HTTPS, SSH, FTP, MySQL, etc.).
+  - **Custom/Range Scanning:** You can specify a single port (e.g., `8080`) or a port range (e.g., `50-120`).
+  - **Smart Sorting:** Open ports are automatically moved to the top of the list once the scan finishes.
+- **Concurrency & Performance:** Uses `Goroutines`, `Channels`, and Semaphore architecture in the background for maximum efficiency without freezing the UI. Thanks to Fyne's Data Binding, results are rendered in real-time.
+- **Cross-Platform:** Can be compiled for Windows (.exe), Linux, and macOS (Apple Silicon & Intel) using GitHub Actions, functioning entirely as a native desktop application.
 
-## Kullanım 🚀
+## Usage 🚀
 
-### Geliştirici Olarak Çalıştırmak
-Sisteminizde [Go 1.22+](https://go.dev/) kurulu olduğundan emin olun.
+### Running as a Developer
+Make sure you have [Go 1.22+](https://go.dev/) installed on your system.
 ```bash
-# Bağımlılıkları indirin
+# Download dependencies
 go mod tidy
 
-# Uygulamayı başlatın (Ping paketleri için sudo gerekebilir)
+# Run the application (sudo may be required for ICMP Ping packets)
 go run .
 ```
 
-### Derlenmiş Sürümü İndirmek
-Projenin GitHub **Releases** sekmesine giderek işletim sisteminize uygun çalıştırılabilir dosyayı indirebilir ve kurulum gerektirmeden direkt çalıştırabilirsiniz.
+### Downloading Pre-compiled Binaries
+You can navigate to the **Releases** tab on the project's GitHub repository to download the executable suitable for your operating system and run it directly without any installation.
 
-## Teknoloji Yığını 💻
+## Tech Stack 💻
 - **Backend:** Go (Golang)
 - **Concurrency:** Goroutines, Channels, sync.WaitGroup, sync.RWMutex
-- **Arayüz (GUI):** [Fyne v2](https://fyne.io/)
+- **GUI:** [Fyne v2](https://fyne.io/)
 - **Data Binding:** `fyne.io/fyne/v2/data/binding` 
-- **Sistem İletişimi:** `os/exec` ile ARP okuması ve ICMP ping işlemi.
+- **System Communication:** `os/exec` for ARP table reading and ICMP ping execution.
 
 ---
-*Furkan Selek tarafından geliştirilmiştir.*
+*Developed by Furkan Selek.*
